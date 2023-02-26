@@ -1,0 +1,290 @@
+# OpenAPI Schema for SakuraFrp API v4
+
+openapi: 3.0.3
+info:
+  title: SakuraFrp API
+  version: 4.1.0
+  termsOfService: "https://www.natfrp.com/policy/tos"
+  license:
+    name: GNU Affero General Public License v3.0
+    url: "https://www.gnu.org/licenses/agpl-3.0.en.html"
+  contact:
+    name: SakuraFrp Support
+    email: support@natfrp.cloud
+
+servers:
+  - url: "https://api.natfrp.com/v4"
+    description: SakuraFrp API
+
+paths:
+  /user/info:
+    get:
+      tags: [用户信息]
+      summary: 获取用户基本信息
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: ./schemas/UserInfo.yaml
+          description: 返回用户信息
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /tunnels:
+    get:
+      tags: [隧道管理]
+      summary: 列出所有隧道
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./schemas/TunnelFull.yaml
+          description: 隧道列表
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+    post:
+      tags: [隧道管理]
+      summary: 创建隧道
+      requestBody:
+        content:
+          application/www-form-urlencoded: &tunnelCreateRequestBody
+            schema:
+              $ref: ./schemas/TunnelFull.yaml
+          application/json: *tunnelCreateRequestBody
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - name
+                properties:
+                  id:
+                    type: integer
+                    description: 创建的隧道 ID
+                    example: 114514
+                  name:
+                    type: string
+                    description: 创建的隧道名
+                    example: SampleTunnel
+                  remote:
+                    description: 远程信息
+                    oneOf:
+                      - description: "远程端口"
+                        type: integer
+                        example: 114455
+                      - description: "绑定域名"
+                        type: string
+                        example: "www.example.com"
+          description: 创建成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /tunnel/config:
+    post:
+      summary: 获取隧道配置文件
+      tags: [隧道管理]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &tunnelConfigRequestBody
+            schema:
+              type: object
+              properties:
+                query:
+                  description: |
+                    启动目标查询字符串，格式为 `<启动目标1>[,启动目标2...]`
+
+                    多个 **启动目标** 使用半角逗号 "," 分开，中间不能有空格或其他字符
+
+                    每个 **启动目标** 可以是：
+                    - 一个隧道 ID（如 `114514`）
+                    - `n` 前缀的节点 ID（如 `n233`）
+                  type: string
+                  example: "114514,114515,n233"
+            examples:
+              查询单条隧道:
+                value:
+                  query: "114514"
+              查询单个节点下所有隧道:
+                value:
+                  query: n233
+              查询多节点下的多条隧道:
+                value:
+                  query: "n233,n234,114514"
+          application/json: *tunnelConfigRequestBody
+
+      responses:
+        "200":
+          content:
+            text/plain: {}
+          description: 可被 frpc 加载的 ini 配置文件
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /tunnel/delete:
+    post:
+      summary: 删除隧道
+      tags: [隧道管理]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &deleteTunnelRequestBody
+            schema:
+              type: object
+              properties:
+                ids:
+                  description: 以 `,` 分隔的隧道 ID 列表，最大支持 10 条隧道
+                  type: string
+                  example: 114514,1919,810
+          application/json: *deleteTunnelRequestBody
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - deleted
+                  - failed
+                properties:
+                  deleted:
+                    type: array
+                    items:
+                      type: integer
+                    description: 被删除的隧道 ID 列表
+                    example:
+                      - 114514
+                      - 114515
+                  failed:
+                    type: array
+                    items:
+                      type: integer
+                    description: 已删除但未能成功踢下线的隧道 ID 列表
+                    example:
+                      - 1919
+          description: 删除成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /tunnel/auth:
+    post:
+      summary: 授权 IP 访问隧道
+      tags: [隧道管理, 访问认证]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &tunnelAuthRequestBody
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  description: 隧道 ID
+                  type: integer
+                  example: 114514
+                ip:
+                  description: 要授权的 IP，留空授权请求 IP
+                  type: string
+                  example: "114.51.4.191"
+          application/json: *tunnelAuthRequestBody
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - ip
+                properties:
+                  ip:
+                    type: string
+                    description: 授权成功的 IP
+                    example: "114.51.4.191"
+          description: 授权成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /tunnel/auth_query:
+    post:
+      summary: 根据节点 IP 和端口查询隧道，用于访问认证授权
+      tags: [隧道管理, 访问认证]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &tunnelRemoteQueryRequestBody
+            schema:
+              type: object
+              required:
+                - ip
+                - port
+              properties:
+                ip:
+                  description: 节点 IP
+                  type: string
+                  example: "114.51.4.191"
+                port:
+                  description: 隧道远程端口
+                  type: integer
+                  example: 114514
+          application/json: *tunnelRemoteQueryRequestBody
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - name
+                properties:
+                  id:
+                    type: integer
+                    description: 隧道 ID
+                    example: 114514
+                  name:
+                    type: string
+                    description: 隧道名
+                    example: SampleTunnel
+          description: 查询到的隧道信息
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+components:
+  responses:
+    ErrorResponse:
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - code
+              - msg
+            properties:
+              code:
+                description: 错误代码
+                type: integer
+                example: 403
+              msg:
+                description: 人类友好的错误信息
+                type: string
+                example: 无权访问
+      description: 通用错误返回
+
+  securitySchemes:
+    PanelSessionCookie:
+      type: apiKey
+      description: 主站 PHP Session 认证
+      name: PHPSESSID
+      in: cookie
+    UserToken:
+      scheme: bearer
+      type: http
+      description: 访问密钥认证 - Bearer Token
+    UserTokenPost:
+      type: apiKey
+      description: 访问密钥认证 - POST 参数
+      name: token
+      in: query
+
+security:
+  - UserToken: []
+  - UserTokenPost: []
+  - PanelSessionCookie: []

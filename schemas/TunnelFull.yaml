@@ -1,0 +1,24 @@
+# Tunnel with immutable properties defined
+# For creation / retrieval actions
+
+allOf:
+  - type: object
+    required:
+      - name
+    properties:
+      name:
+        description: 隧道名
+        type: string
+        example: SampleTunnel
+      type:
+        description: 隧道类型
+        type: string
+        enum:
+          - tcp
+          - udp
+          - http
+          - https
+          - wol
+          - etcp
+          - eudp
+  - $ref: ./Tunnel.yaml

@@ -1,0 +1,152 @@
+oneOf:
+  - type: object
+    title: 用户基本信息
+    required:
+      - id
+      - name
+      - avatar
+      - token
+      - speed
+      - tunnels
+      - realname
+      - group
+      - traffic
+      - sign
+    properties:
+      id:
+        description: UID
+        type: integer
+        example: "10"
+      name:
+        description: 用户名
+        type: string
+        example: DemoUser
+      avatar:
+        description: 头像 URL
+        type: string
+        example: "https://gravatar.globalslb.net/avatar/example"
+      token:
+        description: 访问密钥
+        type: string
+        example: wdnmdtoken666666
+      speed:
+        description: 限速信息字符串
+        type: string
+        example: 10 Mbps
+      tunnels:
+        description: 隧道数上限
+        type: integer
+        example: "10"
+      realname:
+        description: 实名认证状态
+        type: integer
+      group:
+        description: 用户组信息
+        type: object
+        required:
+          - name
+          - level
+          - expires
+        properties:
+          name:
+            description: 用户组名称
+            type: string
+          level:
+            description: 用户组等级
+            type: integer
+          expires:
+            description: 用户组到期时间
+            type: integer
+      traffic:
+        type: array
+        items:
+          type: integer
+        maxItems: 2
+        minItems: 2
+        example: [0, 1048576]
+        description: "流量信息, `[本日消耗流量, 总剩余流量]`"
+      sign:
+        description: 签到状态
+        type: object
+        required:
+          - config
+          - signed
+          - last
+          - days
+          - traffic
+        properties:
+          config:
+            oneOf:
+              - title: 签到流量范围
+                type: array
+                items:
+                  type: integer
+                minItems: 2
+                maxItems: 2
+                example: [1, 2]
+              - title: 签到系统已禁用
+                type: boolean
+                example: false
+          signed:
+            type: boolean
+            description: 今日已签到
+            example: false
+          last:
+            format: date
+            type: string
+            description: 上次签到日期
+            example: "2023-01-01"
+          days:
+            type: integer
+            description: 连续签到天数
+            example: 233
+          traffic:
+            format: double
+            type: number
+            description: 签到获取的总流量
+            example: 317.9
+
+  - title: 用户冻结状态
+    type: object
+    required:
+      - id
+      - name
+      - avatar
+      - ban
+    properties:
+      id:
+        description: UID
+        type: integer
+        example: "10"
+      name:
+        description: 用户名
+        type: string
+        example: DemoUser
+      avatar:
+        description: 头像 URL
+        type: string
+        example: "https://gravatar.globalslb.net/avatar/example"
+      ban:
+        description: 冻结状态信息
+        type: object
+        required:
+          - title
+          - reason
+          - expires
+        properties:
+          title:
+            type: string
+            description: 标题
+            example: 该账户已被冻结
+          reason:
+            type: string
+            description: 冻结原因
+            example: 已提交清除实名信息申请
+          expires_text:
+            type: string
+            description: 状态到期时间标题
+            example: 解冻时间
+          expires:
+            type: integer
+            description: 解冻时间戳
+            example: 1136214245

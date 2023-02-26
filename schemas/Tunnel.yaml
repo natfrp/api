@@ -1,0 +1,69 @@
+title: 隧道信息
+required:
+  - id
+  - node
+  - type
+  - status
+  - online
+type: object
+properties:
+  id:
+    description: 隧道 ID
+    type: integer
+    example: 114514
+    readOnly: true
+  node:
+    description: 节点 ID
+    type: integer
+    readOnly: true
+    example: 5
+  status:
+    type: integer
+    readOnly: true
+    enum:
+      - 0
+      - 2
+    example: 0
+    description: |
+      隧道状态
+      - `0`: 正常
+      - `2`: 封禁
+  online:
+    writeOnly: false
+    description: 隧道是否在线
+    type: boolean
+    readOnly: true
+    example: "true"
+  note:
+    description: 备注信息
+    type: string
+  extra:
+    description: 自定义配置数据
+    pattern: '(?:\w+ = .+)(?:\n\w+ = .+)*'
+    type: string
+    example: |
+      key_1 = val_1
+      key_2 = val_2
+      auto_https = auto
+  local_ip:
+    description: 本地 IP
+    type: string
+    example: 127.0.0.1
+  local_port:
+    description: 本地端口
+    type: integer
+    example: 810
+  remote:
+    description: 远程信息
+    oneOf:
+      - description: "远程端口"
+        type: integer
+        example: 114455
+      - description: "绑定域名"
+        type: string
+        example: "www.example.com"
+  export:
+    description: 端口导出状态, `类型|IP 地址|端口`
+    type: string
+    readOnly: true
+    example: 0|2130706433|1919
