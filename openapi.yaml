@@ -17,6 +17,174 @@ servers:
     description: SakuraFrp API
 
 paths:
+  /system/bulletin:
+    get:
+      tags: [系统信息]
+      summary: 获取平台公告
+      security: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - title
+                    - content
+                    - icon
+                    - time
+                    - expand
+                  properties:
+                    title:
+                      type: string
+                      description: 公告标题
+                      example: 关于 SakuraFrp API 的说明
+                    content:
+                      type: string
+                      description: 公告内容
+                      example: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                    time:
+                      type: string
+                      description: 公告发布时间
+                      example: 2023/01/01
+                    icon:
+                      type: string
+                      description: 公告图标
+                      example: 😊
+                    expand:
+                      type: boolean
+                      description: 是否默认展开
+                      example: true
+          description: 返回平台公告列表
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /system/download:
+    get:
+      tags: [系统信息]
+      summary: 获取软件下载信息
+      security: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: object
+                    description: 版本信息
+                    properties:
+                      launcher:
+                        type: object
+                        description: 启动器版本信息
+                        properties:
+                          time:
+                            type: integer
+                            description: 版本发布时间
+                            example: 1620000000
+                          version:
+                            type: string
+                            description: 版本号
+                            example: 2.0.6.0
+                          note:
+                            type: string
+                            description: 更新日志
+                            example: Ut aliquam purus sit amet luctus venenatis lectus magna fringilla
+                      frpc:
+                        type: object
+                        description: 客户端版本信息
+                        properties:
+                          time:
+                            type: integer
+                            description: 版本发布时间
+                            example: 1620000000
+                          version:
+                            type: string
+                            description: 版本号
+                            example: 0.45.0-sakura-2
+                          note:
+                            type: string
+                            description: 更新日志
+                            example: Tristique senectus et netus et malesuada fames
+                  downloads:
+                    type: object
+                    description: 下载分类
+                    additionalProperties:
+                      type: object
+                      description: 某个分类的下载信息
+                      additionalProperties:
+                        type: object
+                        required:
+                          - title
+                          - url
+                        properties:
+                          title:
+                            type: string
+                            description: 下载标题
+                            example: Windows 安装程序
+                          url:
+                            type: string
+                            description: 下载链接
+                            example: https://getfrp.sh/l/SakuraLauncher.exe
+                          url_real:
+                            type: string
+                            description: 无重定向的真实下载链接
+                            example: https://nyat-static.globalslb.net/natfrp/client\/2.0.6.0/SakuraLauncher.exe
+                          hash:
+                            type: string
+                            description: 下载文件哈希值
+                            example: 1234567890abcdef1234567890abcdef
+                          size:
+                            type: integer
+                            description: 下载文件大小
+                            example: 114514
+          description: 返回软件下载信息
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /system/policy:
+    get:
+      tags: [系统信息]
+      summary: 获取服务条款和策略
+      security: []
+      parameters:
+        - name: type
+          in: query
+          description: 策略类型
+          required: true
+          schema:
+            type: string
+            enum:
+              - tos
+              - content
+              - privacy
+              - rule
+              - refund
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - content
+                properties:
+                  alert:
+                    type: string
+                    description: 置顶警告框内容
+                    example: Habitasse platea dictumst vestibulum rhoncus est pellentesque elit
+                  updated:
+                    type: string
+                    description: 策略更新时间
+                    example: 2023/01/04
+                  content:
+                    type: string
+                    description: 策略内容文本
+                    example: Nam at lectus urna duis. Sed pulvinar proin gravida hendrerit. Nec feugiat nisl pretium fusce id velit ut tortor pretium.
+          description: 返回服务条款和策略
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
   /user/info:
     get:
       tags: [用户信息]
