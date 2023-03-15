@@ -480,6 +480,31 @@ paths:
           description: 删除成功
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
+  /tunnel/traffic:
+    get:
+      summary: 获取流量使用记录
+      tags: [隧道管理]
+      parameters:
+        - name: id
+          in: query
+          description: 隧道 ID
+          required: true
+          schema:
+            type: integer
+            description: 隧道 ID
+            example: 114514
+      description: 返回 `Timestamp[Traffic]`
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: integer
+          description: 隧道流量历史记录
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
   /tunnel/auth:
     post:
       summary: 授权 IP 访问隧道
