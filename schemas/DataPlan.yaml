@@ -1,0 +1,37 @@
+type: object
+required:
+  - id
+  - type
+  - type_extra
+  - total
+  - remaining
+  - start_time
+  - end_time
+properties:
+  id:
+    type: integer
+    example: 10
+  type:
+    description: 流量包类型
+    type: int
+    example: 10001
+  type_extra:
+    description: 流量包类型额外信息 JSON
+    type: string
+    example: '{"extra_info": true}'
+  total:
+    description: 流量包总量
+    type: int
+    example: 5368709120
+  remaining:
+    description: 流量包剩余量
+    type: int
+    example: 5368709120
+  start_time:
+    description: 流量包开始时间戳
+    type: int
+    example: 1136214245
+  end_time:
+    description: 流量包结束时间戳
+    type: int
+    example: 1136214245

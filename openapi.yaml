@@ -198,6 +198,84 @@ paths:
           description: 返回用户信息
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
+  /user/reset_token:
+    post:
+      tags: [用户信息]
+      summary: 重置用户访问密钥
+      security:
+        - PanelSessionCookie: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+                description: 新访问密钥
+                example: wdnmdtoken666666
+          description: 返回重置后的访问密钥
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /user/data_plan:
+    get:
+      tags: [用户信息]
+      summary: 获取用户流量包
+      parameters:
+        - name: status
+          in: query
+          description: 流量包状态
+          schema:
+            type: string
+            enum:
+              - valid
+              - invalid
+              - all
+            default: valid
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./schemas/DataPlan.yaml
+          description: 返回用户流量包信息
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /user/traffic_history:
+    get:
+      tags: [用户信息]
+      summary: 获取用户流量历史
+      parameters:
+        - name: type
+          in: query
+          description: 查询时间类型
+          required: true
+          schema:
+            type: string
+            enum:
+              - day
+              - week
+              - month
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: array
+                  items:
+                    type: string
+                  maxItems: 3
+                  minItems: 3
+                  example:
+                    - "2023-01"
+                    - 0
+                    - 5368709120
+                  description: "流量历史数据点, `[时间段, 流量消耗, 流量剩余]`"
+          description: 返回用户流量历史
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
   /nodes:
     get:
       tags: [节点管理]
