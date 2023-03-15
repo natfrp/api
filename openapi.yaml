@@ -578,6 +578,106 @@ paths:
           description: 查询到的隧道信息
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
+  /computers:
+    get:
+      summary: 获取计算机列表
+      tags: [计算机管理]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ./schemas/ComputerWithId.yaml
+          description: 计算机列表
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+    post:
+      summary: 添加计算机
+      tags: [计算机管理]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &addComputerRequestBody
+            schema:
+              $ref: ./schemas/Computer.yaml
+          application/json: *addComputerRequestBody
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+                    description: 计算机 ID
+                    example: 114514
+          description: 创建成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+    patch:
+      summary: 更新计算机信息
+      tags: [计算机管理]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &updateComputersRequestBody
+            schema:
+              $ref: ./schemas/ComputerWithId.yaml
+          application/json: *updateComputersRequestBody
+      responses:
+        "204":
+          description: 更新成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /computer/delete:
+    post:
+      summary: 删除计算机
+      tags: [计算机管理]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &deleteComputerRequestBody
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: 计算机 ID
+                  example: 1001
+          application/json: *deleteComputerRequestBody
+      responses:
+        "204":
+          description: 删除成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /computer/poweron:
+    post:
+      summary: 执行远程开机
+      tags: [计算机管理]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &powerOnRequestBody
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: 计算机 ID
+                  example: 1001
+                password:
+                  type: string
+                  description: 远程开机客户端密码
+                  example: "wdnmdpassword"
+          application/json: *powerOnRequestBody
+      responses:
+        "204":
+          description: 开机成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
 components:
   responses:
     ErrorResponse:

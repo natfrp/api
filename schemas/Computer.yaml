@@ -1,0 +1,30 @@
+title: 计算机信息
+required:
+  - name
+  - type
+  - data
+  - media
+type: object
+properties:
+  name:
+    description: 计算机名
+    type: string
+    example: My PC
+  type:
+    type: integer
+    enum:
+      - 1
+      - 2
+    example: 1
+    description: |
+      计算机类型
+      - `1`: WOL
+      - `2`: WOL (密码保护)
+  data:
+    description: 媒介特定数据, 例如 MAC
+    type: string
+    example: "11:22:33:44:55:66"
+  media:
+    type: integer
+    description: 媒介 ID, 例如隧道 ID
+    example: 114514

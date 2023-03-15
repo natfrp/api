@@ -1,0 +1,13 @@
+# Computer with id defined
+# For edit / retrieval actions
+
+allOf:
+  - type: object
+    required:
+      - id
+    properties:
+      id:
+        description: 计算机 ID
+        type: integer
+        example: 1001
+  - $ref: ./Computer.yaml
