@@ -292,6 +292,89 @@ paths:
           description: 可被 frpc 加载的 ini 配置文件
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
+  /tunnel/edit:
+    post:
+      summary: 编辑隧道
+      tags: [隧道管理]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &tunnelEditRequestBody
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: 隧道 ID
+                  example: 114514
+                note:
+                  type: string
+                  description: 隧道备注
+                  example: SampleTunnel
+                local_ip:
+                  type: string
+                  description: 本地 IP
+                  example: 127.0.0.1
+                local_port:
+                  type: integer
+                  description: 本地端口
+                  example: 114514
+                extra:
+                  type: string
+                  description: 额外参数列表
+                  example: "key=value\nkey2=value2"
+          application/json: *tunnelEditRequestBody
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - extra
+                properties:
+                  extra:
+                    type: string
+                    description: 处理后的额外参数列表
+                    example: "key=value\nkey2=value2"
+          description: 服务端处理后的参数
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /tunnel/migrate:
+    post:
+      summary: 迁移隧道
+      tags: [隧道管理]
+      requestBody:
+        content:
+          application/www-form-urlencoded: &tunnelMigrateRequestBody
+            schema:
+              type: object
+              required:
+                - id
+                - node
+              properties:
+                id:
+                  type: integer
+                  description: 隧道 ID
+                  example: 114514
+                node:
+                  type: integer
+                  description: 目标节点 ID
+                  example: 233
+          application/json: *tunnelMigrateRequestBody
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                minProperties: 0
+                maxProperties: 0
+          description: 迁移成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
   /tunnel/delete:
     post:
       summary: 删除隧道
