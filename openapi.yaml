@@ -426,14 +426,7 @@ paths:
                   example: 233
           application/json: *tunnelMigrateRequestBody
       responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: object
-                additionalProperties: false
-                minProperties: 0
-                maxProperties: 0
+        "204":
           description: 迁移成功
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
