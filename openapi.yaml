@@ -579,7 +579,7 @@ paths:
   /tunnel/auth:
     post:
       summary: 授权 IP 访问隧道
-      tags: [隧道管理, 访问认证]
+      tags: [访问认证]
       requestBody:
         content:
           application/www-form-urlencoded: &tunnelAuthRequestBody
@@ -616,7 +616,7 @@ paths:
   /tunnel/auth_query:
     post:
       summary: 根据节点 IP 和端口查询隧道，用于访问认证授权
-      tags: [隧道管理, 访问认证]
+      tags: [访问认证]
       requestBody:
         content:
           application/www-form-urlencoded: &tunnelRemoteQueryRequestBody
