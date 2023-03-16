@@ -215,7 +215,7 @@ paths:
           description: 返回重置后的访问密钥
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
-  /user/data_plan:
+  /user/data_plans:
     get:
       tags: [用户信息]
       summary: 获取用户流量包
