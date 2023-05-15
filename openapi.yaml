@@ -13,8 +13,10 @@ info:
     email: support@natfrp.cloud
 
 servers:
-  - url: "https://api.natfrp.com/v4"
+  - url: "https://natfrp-api.globalslb.net/v4"
     description: SakuraFrp API
+  - url: "https://api.natfrp.com/v4"
+    description: SakuraFrp API (弃用)
 
 paths:
   /system/bulletin:
