@@ -28,6 +28,11 @@ properties:
       隧道状态
       - `0`: 正常
       - `2`: 封禁
+  status_reason:
+    type: string
+    readOnly: true
+    example: null
+    description: 隧道状态原因, 如封禁理由
   online:
     writeOnly: false
     description: 隧道是否在线
