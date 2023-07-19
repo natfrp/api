@@ -59,14 +59,9 @@ properties:
     type: integer
     example: 810
   remote:
-    description: 远程信息
-    oneOf:
-      - description: "远程端口"
-        type: integer
-        example: 114455
-      - description: "绑定域名"
-        type: string
-        example: "www.example.com"
+    type: string
+    description: 远程信息, 端口或绑定域名
+    example: example.tld
   export:
     description: 端口导出状态, `类型|IP 地址|端口`
     type: string

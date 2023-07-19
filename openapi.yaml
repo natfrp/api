@@ -383,14 +383,9 @@ paths:
                     description: 创建的隧道名
                     example: SampleTunnel
                   remote:
-                    description: 远程信息
-                    oneOf:
-                      - description: "远程端口"
-                        type: integer
-                        example: 114455
-                      - description: "绑定域名"
-                        type: string
-                        example: "www.example.com"
+                    type: string
+                    description: 远程信息, 端口或绑定域名
+                    example: example.tld
           description: 创建成功
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
