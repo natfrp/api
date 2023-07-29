@@ -62,10 +62,10 @@ paths:
           description: 返回平台公告列表
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
-  /system/download:
+  /system/clients:
     get:
       tags: [系统信息]
-      summary: 获取软件下载信息
+      summary: 获取客户端软件信息
       security: []
       responses:
         "200":
@@ -73,54 +73,35 @@ paths:
             application/json:
               schema:
                 type: object
-                properties:
-                  version:
-                    type: object
-                    description: 版本信息
-                    properties:
-                      launcher:
-                        type: object
-                        description: 启动器版本信息
-                        properties:
-                          time:
-                            type: integer
-                            description: 版本发布时间
-                            example: 1620000000
-                          version:
-                            type: string
-                            description: 版本号
-                            example: 2.0.6.0
-                          note:
-                            type: string
-                            description: 更新日志
-                            example: Ut aliquam purus sit amet luctus venenatis lectus magna fringilla
-                      frpc:
-                        type: object
-                        description: 客户端版本信息
-                        properties:
-                          time:
-                            type: integer
-                            description: 版本发布时间
-                            example: 1620000000
-                          version:
-                            type: string
-                            description: 版本号
-                            example: 0.45.0-sakura-2
-                          note:
-                            type: string
-                            description: 更新日志
-                            example: Tristique senectus et netus et malesuada fames
-                  downloads:
-                    type: object
-                    description: 下载分类
-                    additionalProperties:
+                additionalProperties:
+                  type: object
+                  description: 下载分类
+                  required:
+                    - ver
+                    - time
+                  properties:
+                    ver:
+                      type: string
+                      description: 版本号
+                      example: 3.0.0
+                    time:
+                      type: integer
+                      description: 版本发布时间
+                      example: 1620000000
+                    note:
+                      type: string
+                      description: 更新日志
+                      example: Ut aliquam purus sit amet luctus venenatis lectus magna fringilla
+                    archs:
                       type: object
-                      description: 某个分类的下载信息
+                      description: 某个分类的架构列表, 仅 download=true 时存在
                       additionalProperties:
                         type: object
                         required:
                           - title
                           - url
+                          - hash
+                          - size
                         properties:
                           title:
                             type: string
@@ -129,11 +110,7 @@ paths:
                           url:
                             type: string
                             description: 下载链接
-                            example: https://getfrp.sh/l/SakuraLauncher.exe
-                          url_real:
-                            type: string
-                            description: 无重定向的真实下载链接
-                            example: https://nyat-static.globalslb.net/natfrp/client\/2.0.6.0/SakuraLauncher.exe
+                            example: https://nya.globalslb.net/natfrp/client/foo/bar
                           hash:
                             type: string
                             description: 下载文件哈希值
