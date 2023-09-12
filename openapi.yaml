@@ -13,10 +13,8 @@ info:
     email: support@natfrp.cloud
 
 servers:
-  - url: "https://natfrp-api.globalslb.net/v4"
-    description: SakuraFrp API
   - url: "https://api.natfrp.com/v4"
-    description: SakuraFrp API (弃用)
+    description: SakuraFrp API
 
 paths:
   /system/bulletin:
@@ -752,11 +750,11 @@ components:
       description: 通用错误返回
 
   securitySchemes:
-    PanelSessionCookie:
-      type: apiKey
-      description: 主站 PHP Session 认证
-      name: PHPSESSID
-      in: cookie
+    # PanelSessionCookie:
+    #   type: apiKey
+    #   description: 主站 PHP Session 认证
+    #   name: PHPSESSID
+    #   in: cookie
     UserToken:
       scheme: bearer
       type: http
@@ -770,4 +768,4 @@ components:
 security:
   - UserToken: []
   - UserTokenPost: []
-  - PanelSessionCookie: []
+  # - PanelSessionCookie: []
