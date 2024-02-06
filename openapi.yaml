@@ -329,7 +329,54 @@ paths:
         content:
           application/www-form-urlencoded: &tunnelCreateRequestBody
             schema:
-              $ref: ./schemas/TunnelFull.yaml
+              type: object
+              required:
+                - name
+                - type
+                - node
+              properties:
+                name:
+                  description: 隧道名
+                  type: string
+                  example: SampleTunnel
+                type:
+                  description: 隧道类型
+                  type: string
+                  enum:
+                    - tcp
+                    - udp
+                    - http
+                    - https
+                    - wol
+                    - etcp
+                    - eudp
+                node:
+                  description: 节点 ID
+                  type: integer
+                  example: 5
+                note:
+                  description: 备注信息
+                  type: string
+                extra:
+                  description: 自定义配置数据
+                  pattern: '(?:\w+ = .+)(?:\n\w+ = .+)*'
+                  type: string
+                  example: |
+                    key_1 = val_1
+                    key_2 = val_2
+                    auto_https = auto
+                local_ip:
+                  description: 本地 IP, 除 wol 类型外必填
+                  type: string
+                  example: 127.0.0.1
+                local_port:
+                  description: 本地端口, 除 wol 类型外必填
+                  type: integer
+                  example: 810
+                remote:
+                  type: string
+                  description: 远程信息, 端口或绑定域名 (http/https 类型必填)
+                  example: example.tld
           application/json: *tunnelCreateRequestBody
         required: true
       responses:
