@@ -162,6 +162,73 @@ paths:
           description: 返回服务条款和策略
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
+  /system/node_stats:
+    get:
+      tags: [系统信息]
+      summary: 获取节点状态信息
+      security: []
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - time
+                  - in
+                  - out
+                properties:
+                  time:
+                    type: integer
+                    description: 数据更新时间戳
+                    example: 1620000000
+                  in:
+                    type: string
+                    description: 总入网流量
+                    example: 1.0 GiB
+                  out:
+                    type: string
+                    description: 总出网流量
+                    example: 1.0 GiB
+                  nodes:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - in
+                        - out
+                        - online
+                        - uptime
+                        - load
+                      properties:
+                        id:
+                          type: integer
+                          description: 节点 ID
+                          example: 233
+                        in:
+                          type: string
+                          description: 入网流量
+                          example: 1.0 GiB
+                        out:
+                          type: string
+                          description: 出网流量
+                          example: 1.0 GiB
+                        online:
+                          type: integer
+                          description: 在线隧道数
+                          example: 233
+                        uptime:
+                          type: integer
+                          description: 节点运行时间 (秒)
+                          example: 114514
+                        load:
+                          type: integer
+                          description: 节点负载 (%)
+                          example: 19.19
+          description: 返回节点状态信息
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
   /user/info:
     get:
       tags: [用户信息]
