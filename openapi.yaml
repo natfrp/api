@@ -327,7 +327,7 @@ paths:
       summary: 创建隧道
       requestBody:
         content:
-          application/www-form-urlencoded: &tunnelCreateRequestBody
+          application/x-www-form-urlencoded: &tunnelCreateRequestBody
             schema:
               type: object
               required:
@@ -410,7 +410,7 @@ paths:
       tags: [隧道管理]
       requestBody:
         content:
-          application/www-form-urlencoded: &tunnelConfigRequestBody
+          application/x-www-form-urlencoded: &tunnelConfigRequestBody
             schema:
               type: object
               properties:
@@ -450,7 +450,7 @@ paths:
       tags: [隧道管理]
       requestBody:
         content:
-          application/www-form-urlencoded: &tunnelEditRequestBody
+          application/x-www-form-urlencoded: &tunnelEditRequestBody
             schema:
               type: object
               required:
@@ -499,7 +499,7 @@ paths:
       tags: [隧道管理]
       requestBody:
         content:
-          application/www-form-urlencoded: &tunnelMigrateRequestBody
+          application/x-www-form-urlencoded: &tunnelMigrateRequestBody
             schema:
               type: object
               required:
@@ -526,7 +526,7 @@ paths:
       tags: [隧道管理]
       requestBody:
         content:
-          application/www-form-urlencoded: &deleteTunnelRequestBody
+          application/x-www-form-urlencoded: &deleteTunnelRequestBody
             schema:
               type: object
               properties:
@@ -594,7 +594,7 @@ paths:
       tags: [访问认证]
       requestBody:
         content:
-          application/www-form-urlencoded: &tunnelAuthRequestBody
+          application/x-www-form-urlencoded: &tunnelAuthRequestBody
             schema:
               type: object
               required:
@@ -631,7 +631,7 @@ paths:
       tags: [访问认证]
       requestBody:
         content:
-          application/www-form-urlencoded: &tunnelRemoteQueryRequestBody
+          application/x-www-form-urlencoded: &tunnelRemoteQueryRequestBody
             schema:
               type: object
               required:
@@ -687,7 +687,7 @@ paths:
       tags: [计算机管理]
       requestBody:
         content:
-          application/www-form-urlencoded: &addComputerRequestBody
+          application/x-www-form-urlencoded: &addComputerRequestBody
             schema:
               $ref: ./schemas/Computer.yaml
           application/json: *addComputerRequestBody
@@ -711,7 +711,7 @@ paths:
       tags: [计算机管理]
       requestBody:
         content:
-          application/www-form-urlencoded: &updateComputersRequestBody
+          application/x-www-form-urlencoded: &updateComputersRequestBody
             schema:
               $ref: ./schemas/ComputerWithId.yaml
           application/json: *updateComputersRequestBody
@@ -726,7 +726,7 @@ paths:
       tags: [计算机管理]
       requestBody:
         content:
-          application/www-form-urlencoded: &deleteComputerRequestBody
+          application/x-www-form-urlencoded: &deleteComputerRequestBody
             schema:
               type: object
               required:
@@ -748,7 +748,7 @@ paths:
       tags: [计算机管理]
       requestBody:
         content:
-          application/www-form-urlencoded: &powerOnRequestBody
+          application/x-www-form-urlencoded: &powerOnRequestBody
             schema:
               type: object
               required:
