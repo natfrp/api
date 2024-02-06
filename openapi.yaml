@@ -242,23 +242,6 @@ paths:
           description: 返回用户信息
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
-  /user/reset_token:
-    post:
-      tags: [用户信息]
-      summary: 重置用户访问密钥
-      security:
-        - PanelSessionCookie: []
-      responses:
-        "200":
-          content:
-            application/json:
-              schema:
-                type: string
-                description: 新访问密钥
-                example: wdnmdtoken666666
-          description: 返回重置后的访问密钥
-        "500": { $ref: "#/components/responses/ErrorResponse" }
-
   /user/data_plans:
     get:
       tags: [用户信息]
@@ -318,6 +301,54 @@ paths:
                     - 5368709120
                   description: "流量历史数据点, `[时间段, 流量消耗, 流量剩余]`"
           description: 返回用户流量历史
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /user/notification:
+    get:
+      tags: [用户信息]
+      summary: 获取用户通知列表
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - match
+                    - type
+                    - title
+                    - content
+                  properties:
+                    match:
+                      type: array
+                      description: 路由匹配规则列表
+                      items:
+                        type: string
+                      example:
+                        - '*'
+                        - /tunnel/
+                        - /user/*
+                    type:
+                      type: string
+                      description: 通知类型
+                      enum:
+                        - default
+                        - info
+                        - success
+                        - warning
+                        - error
+                      example: info
+                    title:
+                      type: string
+                      description: 通知标题
+                      example: 非常好通知，爱来自 iDea Leaper
+                    content:
+                      type: string
+                      description: 通知内容
+                      example: lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+          description: 返回通知列表
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
   /nodes:
