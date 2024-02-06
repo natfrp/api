@@ -1,25 +1,45 @@
 title: 隧道信息
 required:
   - id
+  - name
   - node
   - type
-  - status
   - online
+  - status
+  - status_reason
+  - note
+  - extra
+  - remote
+  - local_ip
+  - local_port
+  - export
 type: object
 properties:
   id:
     description: 隧道 ID
     type: integer
     example: 114514
-    readOnly: true
+  name:
+    description: 隧道名
+    type: string
+    example: SampleTunnel
+  type:
+    description: 隧道类型
+    type: string
+    enum:
+      - tcp
+      - udp
+      - http
+      - https
+      - wol
+      - etcp
+      - eudp
   node:
     description: 节点 ID
     type: integer
-    readOnly: true
     example: 5
   status:
     type: integer
-    readOnly: true
     enum:
       - 0
       - 2
@@ -30,14 +50,12 @@ properties:
       - `2`: 封禁
   status_reason:
     type: string
-    readOnly: true
     example: null
     description: 隧道状态原因, 如封禁理由
   online:
     writeOnly: false
     description: 隧道是否在线
     type: boolean
-    readOnly: true
     example: "true"
   note:
     description: 备注信息
@@ -65,5 +83,4 @@ properties:
   export:
     description: 端口导出状态, `类型|IP 地址|端口`
     type: string
-    readOnly: true
     example: 0|2130706433|1919

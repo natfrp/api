@@ -319,7 +319,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: ./schemas/TunnelFull.yaml
+                  $ref: ./schemas/Tunnel.yaml
           description: 隧道列表
         "500": { $ref: "#/components/responses/ErrorResponse" }
     post:
