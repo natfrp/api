@@ -84,3 +84,23 @@ properties:
     description: 端口导出状态, `类型|IP 地址|端口`
     type: string
     example: 0|2130706433|1919
+  locks:
+    description: 隧道锁定状态
+    type: object
+    required:
+      - edit
+      - delete
+      - migrate
+    properties:
+      edit:
+        description: 是否锁定编辑
+        type: boolean
+        example: false
+      delete:
+        description: 是否锁定删除
+        type: boolean
+        example: false
+      migrate:
+        description: 是否锁定迁移
+        type: boolean
+        example: false

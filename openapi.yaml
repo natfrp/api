@@ -591,6 +591,40 @@ paths:
           description: 服务端处理后的参数
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
+  /tunnel/lock:
+    post:
+      summary: 锁定隧道
+      tags: [隧道管理]
+      requestBody:
+        content:
+          application/x-www-form-urlencoded: &tunnelLockRequestBody
+            schema:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+                  description: 隧道 ID
+                  example: 114514
+                edit:
+                  type: boolean
+                  description: 更新锁定编辑状态
+                  example: true
+                delete:
+                  type: boolean
+                  description: 更新锁定删除状态
+                  example: true
+                migrate:
+                  type: boolean
+                  description: 更新锁定迁移状态
+                  example: true
+          application/json: *tunnelLockRequestBody
+      responses:
+        "204":
+          description: 锁定状态修改成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
   /tunnel/migrate:
     post:
       summary: 迁移隧道
