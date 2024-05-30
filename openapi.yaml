@@ -746,14 +746,9 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - ip
-                properties:
-                  ip:
-                    type: string
-                    description: 授权成功的 IP
-                    example: "114.51.4.191"
+                type: string
+                description: 授权成功的 IP
+                example: "114.51.4.191"
           description: 授权成功
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
