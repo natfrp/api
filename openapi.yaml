@@ -905,6 +905,90 @@ paths:
           description: 开机成功
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
+  /domain/get:
+    get:
+      summary: 获取子域绑定功能相关数据
+      tags: [子域绑定]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - records
+                properties: &domainGetResponseProps
+                  domain:
+                    type: string
+                    description: 当前账户申请到的子域名
+                    example: "example.nyat.app"
+                  records:
+                    type: array
+                    description: 账户中的子域名记录列表
+                    items:
+                      type: object
+                      required:
+                        - rr
+                        - type
+                        - tunnel
+                      properties:
+                        rr:
+                          type: string
+                          description: 记录名
+                          example: "www"
+                        type:
+                          type: string
+                          description: 记录类型
+                          example: "CNAME"
+                          enum:
+                            - CNAME
+                            - SRV
+                        tunnel:
+                          type: integer
+                          description: 记录绑定到的隧道 ID
+                          example: 114514
+                  ssl:
+                    type: object
+                    description: 子域名 SSL 证书信息
+                    properties:
+                      created:
+                        type: integer
+                        description: 存在时为当前活跃 SSL 证书的创建时间
+                        example: 1620000000
+                      expires:
+                        type: integer
+                        description: 存在时表示当前 SSL 证书已签发成功, 并指示到前期时间
+                        example: 1620000000
+                  words:
+                    type: array
+                    description: 允许创建记录的关键词白名单
+                    items:
+                      type: string
+                  srv_apps:
+                    type: object
+                    description: 允许创建 SRV 记录的应用白名单
+                    additionalProperties:
+                      type: string
+                  acquire:
+                    type: object
+                    description: 允许申请的子域名风格
+                    additionalProperties:
+                      type: object
+                      required:
+                        - desc
+                        - val
+                      properties:
+                        desc:
+                          type: string
+                          description: 风格名称
+                          example: "UID 前缀"
+                        val:
+                          type: string
+                          description: 风格示例值
+                          example: "u114514"
+          description: 子域绑定功能相关数据
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
 components:
   responses:
     ErrorResponse:
