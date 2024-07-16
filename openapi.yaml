@@ -511,6 +511,9 @@ paths:
           application/x-www-form-urlencoded: &tunnelConfigRequestBody
             schema:
               type: object
+              required:
+                - query
+                - frpc
               properties:
                 query:
                   description: |
@@ -523,6 +526,12 @@ paths:
                     - `n` 前缀的节点 ID（如 `n233`）
                   type: string
                   example: "114514,114515,n233"
+                frpc:
+                  description: |
+                    要获取配置文件的目标 frpc 版本
+
+                    - 支持 SakuraFrp 分发的版本如 `0.51.0-sakura-7.2`
+                    - 也支持上游 frpc 版本如 `0.59.0`，最低支持版本为 `0.18.0`
             examples:
               查询单条隧道:
                 value:
@@ -539,7 +548,8 @@ paths:
         "200":
           content:
             text/plain: {}
-          description: 可被 frpc 加载的 ini 配置文件
+            text/toml: {}
+          description: 可被 frpc 加载的 ini 或 toml 配置文件
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
   /tunnel/edit:
