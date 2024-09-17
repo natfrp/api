@@ -11,6 +11,10 @@ properties:
   id:
     type: integer
     example: 10
+  name:
+    description: 流量包名称
+    type: string
+    example: 普通流量包
   type:
     description: 流量包类型
     type: integer
