@@ -310,7 +310,7 @@ paths:
                     host:
                       type: string
                       description: 节点地址
-                      example: idea-leaper-1.natfrp.cloud
+                      example: idea-leaper-1.natfrp.io
                     description:
                       type: string
                       description: 节点说明
