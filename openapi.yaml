@@ -323,13 +323,15 @@ paths:
                       description: |
                         节点 Flag
                         - `0b11`: 允许 HTTP 隧道
-                        - `1 << 2`: 允许创建隧道
+                        - `1 << 2`: 是否允许创建隧道 (满载时为 0)
                         - `1 << 3`: 是否为内地节点
                         - `1 << 4`: 是否为无防节点
                         - `1 << 5`: 允许 UDP 流量
                         - `1 << 6`: 是否为私有节点
                         - `1 << 7`: tls_sucks
                         - `1 << 8`: 是否强制启用访问认证
+                        - `1 << 9`: 是否离线
+                        - `1 << 10`: 是否为 BETA 节点
                       example: 0
           description: 节点列表
         "500": { $ref: "#/components/responses/ErrorResponse" }
@@ -367,7 +369,7 @@ paths:
                           example: 233
                         online:
                           type: integer
-                          description: 节点是否在线 (0 为在线)
+                          description: 节点是否在线 (-1 为离线, >= 0 为在线, 通常为 0)
                           example:
                             - 0
                             - -1
