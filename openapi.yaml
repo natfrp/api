@@ -16,9 +16,19 @@ servers:
   - url: "https://api.natfrp.com/v4"
     description: SakuraFrp API
 
+tags:
+  - name: 系统信息
+  - name: 用户信息
+  - name: 节点管理
+  - name: 隧道管理
+  - name: 访问认证
+  - name: 计算机管理
+  - name: 子域绑定
+
 paths:
   /system/bulletin:
     get:
+      operationId: getSystemBulletin
       tags: [系统信息]
       summary: 获取平台公告
       security: []
@@ -62,6 +72,7 @@ paths:
 
   /system/clients:
     get:
+      operationId: getSystemClients
       tags: [系统信息]
       summary: 获取客户端软件信息
       security: []
@@ -122,6 +133,7 @@ paths:
 
   /system/policy:
     get:
+      operationId: getSystemPolicy
       tags: [系统信息]
       summary: 获取服务条款和策略
       security: []
@@ -164,6 +176,7 @@ paths:
 
   /user/info:
     get:
+      operationId: getUserInfo
       tags: [用户信息]
       summary: 获取用户基本信息
       responses:
@@ -177,6 +190,7 @@ paths:
 
   /user/data_plans:
     get:
+      operationId: getUserDataPlans
       tags: [用户信息]
       summary: 获取用户流量包
       parameters:
@@ -203,6 +217,7 @@ paths:
 
   /user/traffic_history:
     get:
+      operationId: getUserTrafficHistory
       tags: [用户信息]
       summary: 获取用户流量历史
       parameters:
@@ -238,6 +253,7 @@ paths:
 
   /user/notification:
     get:
+      operationId: getUserNotifications
       tags: [用户信息]
       summary: 获取用户通知列表
       responses:
@@ -286,6 +302,7 @@ paths:
 
   /nodes:
     get:
+      operationId: listNodes
       tags: [节点管理]
       summary: 列出所有节点
       responses:
@@ -339,6 +356,7 @@ paths:
 
   /node/stats:
     get:
+      operationId: getNodeStats
       tags: [节点管理]
       summary: 获取节点状态信息
       responses:
@@ -387,6 +405,7 @@ paths:
 
   /tunnels:
     get:
+      operationId: listTunnels
       tags: [隧道管理]
       summary: 列出所有隧道
       responses:
@@ -402,6 +421,7 @@ paths:
     post:
       tags: [隧道管理]
       summary: 创建隧道
+      operationId: createTunnel
       description: |
         ## ⚠️ 公开游戏服务器穿透限制警告
 
@@ -521,6 +541,7 @@ paths:
 
   /tunnel/config:
     post:
+      operationId: getTunnelConfig
       summary: 获取隧道配置文件
       tags: [隧道管理]
       requestBody:
@@ -571,6 +592,7 @@ paths:
 
   /tunnel/edit:
     post:
+      operationId: editTunnel
       summary: 编辑隧道
       tags: [隧道管理]
       requestBody:
@@ -620,6 +642,7 @@ paths:
 
   /tunnel/lock:
     post:
+      operationId: lockTunnel
       summary: 锁定隧道
       tags: [隧道管理]
       requestBody:
@@ -654,6 +677,7 @@ paths:
 
   /tunnel/migrate:
     post:
+      operationId: migrateTunnel
       summary: 迁移隧道
       tags: [隧道管理]
       requestBody:
@@ -681,6 +705,7 @@ paths:
 
   /tunnel/delete:
     post:
+      operationId: deleteTunnels
       summary: 删除隧道
       tags: [隧道管理]
       requestBody:
@@ -724,6 +749,7 @@ paths:
 
   /tunnel/traffic:
     get:
+      operationId: getTunnelTraffic
       summary: 获取流量使用记录
       tags: [隧道管理]
       parameters:
@@ -749,6 +775,7 @@ paths:
 
   /tunnel/auth:
     post:
+      operationId: authorizeTunnelIp
       summary: 授权 IP 访问隧道
       tags: [访问认证]
       requestBody:
@@ -781,6 +808,7 @@ paths:
 
   /tunnel/auth_query:
     post:
+      operationId: queryTunnelForAuth
       summary: 根据节点 IP 和端口查询隧道，用于访问认证授权
       tags: [访问认证]
       requestBody:
@@ -824,6 +852,7 @@ paths:
 
   /computers:
     get:
+      operationId: listComputers
       summary: 获取计算机列表
       tags: [计算机管理]
       responses:
@@ -838,6 +867,7 @@ paths:
         "500": { $ref: "#/components/responses/ErrorResponse" }
     post:
       summary: 添加计算机
+      operationId: createComputer
       tags: [计算机管理]
       requestBody:
         content:
@@ -862,6 +892,7 @@ paths:
         "500": { $ref: "#/components/responses/ErrorResponse" }
     patch:
       summary: 更新计算机信息
+      operationId: updateComputer
       tags: [计算机管理]
       requestBody:
         content:
@@ -876,6 +907,7 @@ paths:
 
   /computer/delete:
     post:
+      operationId: deleteComputer
       summary: 删除计算机
       tags: [计算机管理]
       requestBody:
@@ -898,6 +930,7 @@ paths:
 
   /computer/poweron:
     post:
+      operationId: powerOnComputer
       summary: 执行远程开机
       tags: [计算机管理]
       requestBody:
@@ -924,8 +957,13 @@ paths:
 
   /domain/get:
     get:
+      operationId: getDomain
       summary: 获取子域绑定功能相关数据
       tags: [子域绑定]
+      description: |
+        使用子域绑定功能需完成实名认证，并具备子域绑定权限。
+        返回账户域名、绑定记录、证书状态及可用配置。
+        domain 表示已分配的域名，acquire 提供可申请的域名风格。
       responses:
         "200":
           content:
@@ -937,7 +975,7 @@ paths:
                 properties: &domainGetResponseProps
                   domain:
                     type: string
-                    description: 当前账户申请到的子域名
+                    description: 当前账户申请到的子域名，申请成功后返回
                     example: "example.nyat.app"
                   records:
                     type: array
@@ -951,7 +989,7 @@ paths:
                       properties:
                         rr:
                           type: string
-                          description: 记录名
+                          description: 相对账户域名的记录名；SRV 记录包含应用和协议前缀
                           example: "www"
                         type:
                           type: string
@@ -966,29 +1004,41 @@ paths:
                           example: 114514
                   ssl:
                     type: object
-                    description: 子域名 SSL 证书信息
+                    description: |
+                      证书签发开始后返回此对象；expires 缺省或为 0 表示签发中。
+                      expires 为到期时间戳，可与当前时间比较以判断证书有效期。
+                      首次通过 frpc 自动 HTTPS 拉取证书时自动触发签发，
+                      到期前 7 天自动续签活跃 (指 5 天内通过自动 HTTPS 加载过) 证书。
+                    required:
+                      - created
                     properties:
                       created:
                         type: integer
-                        description: 存在时为当前活跃 SSL 证书的创建时间
+                        format: int64
+                        description: 当前证书的创建时间
                         example: 1620000000
                       expires:
                         type: integer
-                        description: 存在时表示当前 SSL 证书已签发成功, 并指示到前期时间
-                        example: 1620000000
+                        format: int64
+                        description: 证书到期时间，缺省或 0 表示签发中
+                        example: 1627776000
                   words:
                     type: array
-                    description: 允许创建记录的关键词白名单
+                    description: 允许创建记录的关键词白名单，@ 表示账户域名本身
                     items:
                       type: string
+                    example: ["@", www, game, server]
                   srv_apps:
                     type: object
-                    description: 允许创建 SRV 记录的应用白名单
+                    description: |
+                      SRV 应用白名单；键为包含协议的服务前缀，例如 _minecraft._tcp，值为应用名称
                     additionalProperties:
                       type: string
+                    example:
+                      _minecraft._tcp: Minecraft Java 版
                   acquire:
                     type: object
-                    description: 允许申请的子域名风格
+                    description: 允许申请的子域名风格；对象的键用于申请接口的 type 参数
                     additionalProperties:
                       type: object
                       required:
@@ -1001,9 +1051,185 @@ paths:
                           example: "UID 前缀"
                         val:
                           type: string
-                          description: 风格示例值
+                          description: 风格示例前缀；随机风格以申请结果为准
                           example: "u114514"
           description: 子域绑定功能相关数据
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /domain/acquire:
+    post:
+      operationId: acquireDomain
+      summary: 申请子域名
+      tags: [子域绑定]
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - type
+              properties:
+                type:
+                  type: string
+                  description: 域名风格，取自 acquire 对象的键
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - domain
+                  - records
+                properties: *domainGetResponseProps
+          description: 申请成功，返回完整的子域绑定信息
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /domain/bind:
+    post:
+      operationId: bindDomain
+      summary: 创建或删除隧道子域名
+      tags: [子域绑定]
+      description: |
+        记录名与隧道选择规则：
+        - 每个隧道对应一条绑定记录，子域名可绑定 `TCP`、`UDP` 隧道
+        - 普通记录名从 `words` 白名单选择 1 ~ 3 个词，以 "-" 连接
+        - @ 表示账户获分配的域名本身，作为独立记录名使用 (以 `/domain/get` 返回结果为准，没有返回则不支持)
+        - CNAME 的 rr 为普通记录名，例如 `www`、`my-server` 或 `@`
+        - SRV 的 rr 为 srv_apps 对象的键加上普通记录名，例如 `_minecraft._tcp.game` 或 `_minecraft._tcp.@`
+
+        创建 / 删除绑定后需重新拉取对应的隧道配置。
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - rr
+                - tunnel
+                - domain
+                - type
+              properties:
+                rr:
+                  type: string
+                  description: 相对账户域名的记录名；SRV 记录包含应用和协议前缀
+                  example: www
+                tunnel:
+                  type: integer
+                  minimum: 0
+                  description: 目标隧道 ID，`0` 表示删除记录
+                  example: 114514
+                domain:
+                  type: string
+                  description: GET /domain/get 返回的账户域名
+                  example: example.nyat.app
+                type:
+                  type: string
+                  description: DNS 记录类型
+                  enum: [CNAME, SRV]
+            examples:
+              cname:
+                summary: 创建 CNAME 绑定
+                value:
+                  rr: www
+                  tunnel: 114514
+                  domain: example.nyat.app
+                  type: CNAME
+              cname_segments:
+                summary: 创建多词组合的 CNAME 绑定
+                value:
+                  rr: nas-www
+                  tunnel: 114514
+                  domain: example.nyat.app
+                  type: CNAME
+              srv:
+                summary: 创建 SRV 绑定，应用键须存在于 srv_apps 中
+                value:
+                  rr: _minecraft._tcp.game
+                  tunnel: 114515
+                  domain: example.nyat.app
+                  type: SRV
+              delete:
+                summary: 删除绑定
+                value:
+                  rr: www
+                  tunnel: 0
+                  domain: example.nyat.app
+                  type: CNAME
+      responses:
+        "204":
+          description: 操作成功
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+
+  /domain/cert:
+    get:
+      operationId: getDomainCertificate
+      summary: 下载子域名 SSL 证书及私钥
+      tags: [子域绑定]
+      description: |
+        下载内容包含私钥，请妥善保管。手动配置证书后，请在续签完成时同步更新证书文件。**请将证书妥善保存到本地，避免频繁调用下载接口。**
+      parameters:
+        - name: created
+          in: query
+          required: true
+          description: 当前证书的创建时间
+          schema:
+            type: integer
+            format: int64
+            example: 1620000000
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - key
+                  - cert
+                properties:
+                  key:
+                    type: string
+                    description: 私钥文本
+                  cert:
+                    type: string
+                    description: 证书文本
+          description: 返回证书及私钥文本
+        "500": { $ref: "#/components/responses/ErrorResponse" }
+    post:
+      summary: 提交子域名 SSL 证书续签申请
+      operationId: renewDomainCertificate
+      tags: [子域绑定]
+      description: |
+        适用于到期前 7 天内或已过期的已签发证书。
+        申请条件为 `ssl.expires` > 0 且 `ssl.expires` < 当前 Unix 时间戳 + 604800。
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - created
+                - renew
+              properties:
+                created:
+                  type: integer
+                  format: int64
+                  description: 当前证书的创建时间
+                  example: 1620000000
+                renew:
+                  type: boolean
+                  enum: [true]
+                  description: 提交续签请求
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: string
+          description: 续签请求成功，返回操作提示文本
         "500": { $ref: "#/components/responses/ErrorResponse" }
 
 components:
